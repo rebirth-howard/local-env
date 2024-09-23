@@ -1,0 +1,51 @@
+version: "3.8"
+services:
+  db_first:
+    container_name: db_first_container
+    build:
+      dockerfile: Dockerfile
+      context: ./db
+    #image: {hub}/db_first
+    environment:
+      - MYSQL_DATABASE=first
+      - MYSQL_USER=first_user
+      - MYSQL_PASSWORD=firstuser123
+      - MYSQL_ROOT_PASSWORD=firstuser123
+    volumes:
+      - db_first:/var/lib/mysql
+      - ./db/config:/etc/mysql/conf.d
+#      - ./db/initdb.d:/docker-entrypoint-initdb.d
+#      - ./db/dump/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+    ports:
+      - "13306:3306"
+  db_second:
+    container_name: db_second_container
+    build:
+      dockerfile: Dockerfile
+      context: ./db
+    #image: {hub}/db_second
+    environment:
+      - MYSQL_DATABASE=second
+      - MYSQL_USER=second_user
+      - MYSQL_PASSWORD=seconduser123
+      - MYSQL_ROOT_PASSWORD=seconduser123
+    volumes:
+      - db_second:/var/lib/mysql
+      - ./db/config:/etc/mysql/conf.d
+#      - ./db/initdb.d:/docker-entrypoint-initdb.d
+#      - ./db/dump/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+    ports:
+      - "23306:3306"
+
+#  redis:
+#    image: redis:7.0
+#    container_name: shared_redis
+#    ports:
+#      - "6379:6379"
+#    volumes:
+#      - shared_redis_data:/data
+
+volumes:
+  db_first:
+  db_second:
+#  shared_redis_data:
